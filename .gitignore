@@ -1,0 +1,56 @@
+# Python basics
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.pth
+env/
+.venv/
+venv/
+.env
+
+# Model artifacts & big files
+*.pt
+*.bin
+*.h5
+*.ckpt
+*.onnx
+*.tflite
+*.safetensors
+*.npz
+*.npy
+
+# HuggingFace / Transformers caches
+.cache/
+huggingface/
+.huggingface/
+~/.cache/
+~/.cache/huggingface/
+**/transformers/cache/
+**/datasets/*
+
+# Local data & logs
+data/
+logs/
+wandb/
+mlruns/
+artifacts/
+checkpoints/
+runs/
+outputs/
+app/models/versions/
+
+# Project-specific model dirs
+hx*/
+**/best_model.pt
+**/target2index.json
+**/weights/**/
+**/artifacts/**/
+
+# OS/editor
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
