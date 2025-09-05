@@ -1,0 +1,65 @@
+:root {
+    --primary: #0D6EFD; /* 의료 블루 */
+    --accent:  #20C997; /* 청록 포인트 */
+    --bg:      #f7fafd;
+    --card:    #ffffff;
+    --text:    #0b2447;
+    --muted:   #6c757d;
+    --line:    #e9eef6;
+  }
+  
+  html, body .stApp {
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  }
+  
+  .header {
+    margin: 8px 0 18px 0;
+    padding: 16px 18px;
+    background: linear-gradient(90deg, var(--primary) 0%, #3ea4ff 100%);
+    color: #fff; border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(13,110,253,0.18);
+  }
+  .header .brand { font-weight: 700; opacity: .95; }
+  .header .title { font-size: 20px; font-weight: 700; margin-top: 6px; }
+  .header .subtitle { font-size: 13px; opacity: .9; }
+  
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 16px 18px; margin: 10px 0;
+    box-shadow: 0 6px 18px rgba(2, 36, 83, 0.06);
+  }
+  .card-title { font-weight: 700; margin-bottom: 8px; }
+  .card-body { color: var(--text); }
+  
+  .status { border-radius: 12px; padding: 12px 14px; margin: 10px 0; border: 1px solid var(--line); }
+  .status.info  { background: #eef6ff; border-color: #cfe7ff; }
+  .status.warn  { background: #fff8e6; border-color: #ffe3a8; }
+  .status.error { background: #ffecec; border-color: #ffc2c2; }
+  .status-title { font-weight: 700; margin-bottom: 4px; }
+  .status-body  { color: #223; }
+  
+  .code-row {
+    display: grid; grid-template-columns: 52px 1fr 120px; gap: 10px;
+    align-items: center; border: 1px solid var(--line); border-radius: 12px;
+    background: var(--card); padding: 12px 14px; margin-bottom: 8px;
+    box-shadow: 0 4px 12px rgba(2,36,83,0.05);
+  }
+  .code-rank {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--primary); color: #fff; display: flex; align-items: center;
+    justify-content: center; font-weight: 700;
+  }
+  .code-target { font-weight: 700; }
+  .code-meta { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  
+  .btn { padding: 8px 12px; border-radius: 10px; border: 0; cursor: pointer; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { filter: brightness(0.95); }
+  
+  .footer {
+    color: var(--muted); font-size: 12px; border-top: 1px dashed var(--line);
+    margin-top: 18px; padding-top: 10px;
+  }
+  
