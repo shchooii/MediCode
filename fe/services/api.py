@@ -14,17 +14,19 @@ def _call(method: str, path: str, **kwargs):
 def api_recommend(text: str, top_k: int) -> List[Dict[str, Any]]:
     data, err = _call("POST", "/codes/recommend", json={"text": text, "top_k": top_k})
     if err or not data:
+        # fallback dummy
         return [
-            {"index": 1, "target": "I10 Hypertension", "score": 0.95},
-            {"index": 2, "target": "E11 Type 2 diabetes", "score": 0.93},
+            {"code": "I10", "label": "Hypertension", "score": 0.95},
+            {"code": "E11", "label": "Type 2 diabetes", "score": 0.93},
         ]
     return data.get("options", [])
 
 def api_search(q: str, limit: int = 30) -> List[Dict[str, Any]]:
     data, err = _call("GET", "/codes/search", params={"q": q, "limit": limit})
     if err or not data:
+        # fallback dummy
         return [
-            {"index": 10, "target": "F03 Unspecified dementia", "score": 0.81},
-            {"index": 11, "target": "G30 Alzheimer disease", "score": 0.79},
+            {"code": "F03", "label": "Unspecified dementia", "score": 0.81},
+            {"code": "G30", "label": "Alzheimer disease", "score": 0.79},
         ]
     return data.get("options", [])

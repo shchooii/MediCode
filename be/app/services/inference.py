@@ -2,8 +2,8 @@ import json, torch
 from transformers import AutoTokenizer
 from pathlib import Path
 from typing import List, Dict, Tuple
-from app.core.config import settings
-from app.models.modules.plm_icd import PLMICD
+from ..core.config import settings
+from ..models.modules.plm_icd import PLMICD
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

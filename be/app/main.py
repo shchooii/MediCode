@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers.codes import router as codes_router
+from be.app.routers.codes import router as codes_router
 
 app = FastAPI(
     title="ICD Coding — inference & codes",

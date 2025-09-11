@@ -4,8 +4,7 @@ from torch import nn
 from typing import Optional
 
 from transformers import RobertaModel, AutoConfig
-
-from app.models.modules.attention import LabelAttention
+from .attention import LabelAttention
 
 
 

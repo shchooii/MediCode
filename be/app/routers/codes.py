@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
-from app.schemas.code import RecommendReq, RecommendRes, SearchRes, CodeOption
-from app.services.inference import recommend_codes, search_codes
+from ..schemas.code import RecommendReq, RecommendRes, SearchRes, CodeOption
+from ..services.inference import recommend_codes, search_codes
 
 router = APIRouter(prefix="/codes", tags=["codes"])
 
