@@ -36,24 +36,57 @@ def _already_selected(r):
 # ───────── 카드 CSS ─────────
 _CARD_CSS = """
 <style>
+/* 카드 비주얼 */
 .mc-card {
-  display: flex; justify-content: space-between; align-items: center;
-  border:1px solid var(--line); border-radius:10px; background:var(--card);
-  padding:10px; margin:6px 0; box-shadow:0 2px 6px rgba(0,0,0,0.05);
+  border:1px solid var(--line); border-radius:12px; background:var(--card);
+  padding:12px; margin:6px 0; box-shadow:0 2px 6px rgba(0,0,0,0.05);
+  transition: box-shadow .12s ease, transform .12s ease;
 }
-.mc-card:hover { box-shadow:0 3px 10px rgba(0,0,0,0.08); transform: translateY(-1px); transition:.12s; }
-.mc-card .text { display:flex; flex-direction:column; }
-.mc-card .title { font-weight:700; font-size:14px; color:var(--text); }
-.mc-card .meta  { font-size:12px; color:var(--muted); margin-top:2px; }
-.mc-card .action { margin-left:8px; }
-.mc-card .action .stButton>button {
-  padding: 0.2rem 0.5rem; font-size:12px;
-  border-radius: 8px;
+.mc-card:hover { box-shadow:0 3px 10px rgba(0,0,0,0.08); transform: translateY(-1px); }
+
+.mc-title { font-weight:800; font-size:14px; color:var(--text); line-height:1.2; }
+.mc-meta  { font-size:12px; color:var(--muted); margin-top:4px; }
+
+/* 버튼 사이즈/정렬 통일 */
+.mc-actions { display:flex; justify-content:flex-end; align-items:center; height:100%; }
+.mc-actions .stButton>button {
+  height:28px; min-height:28px; padding:0 10px;
+  font-size:12px; line-height:26px; border-radius:8px;
 }
 </style>
 """
 
-# ───────── renderers ─────────
+# ───────── 카드 CSS (공식 API만 사용) ─────────
+_CARD_CSS = """
+<style>
+div[data-testid="stVerticalBlockBorderWrapper"] {
+  border:1px solid var(--line) !important;
+  border-radius:8px !important;
+  background:var(--card) !important;
+  padding:4px 8px !important;   /* ← 세로 padding 최소화 */
+  margin:4px 0 !important;
+  box-shadow:0 1px 3px rgba(0,0,0,0.05);
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+
+.mc-title { font-weight:700; font-size:14px; color:var(--text); line-height:1.2; }
+.mc-meta  { font-size:12px; color:var(--muted); margin-top:2px; }
+
+/* 버튼 사이즈 고정 */
+.mc-actions { display:flex; align-items:center; justify-content:flex-end; height:100%; }
+.mc-actions .stButton>button {
+  height:28px; min-height:28px;
+  padding:0 8px; font-size:12px; line-height:26px;
+  border-radius:6px;
+}
+</style>
+"""
+
+
 def render_results(title, results, source, add_selection, cols_per_row=3):
     if not results: return
     st.markdown(_CARD_CSS, unsafe_allow_html=True)
@@ -66,24 +99,18 @@ def render_results(title, results, source, add_selection, cols_per_row=3):
                 title_txt = _title_from_item(r)
                 meta_txt  = f"index={_index_from_item(r)} · score={_fmt_score(r.get('score'))}"
 
-                st.markdown(
-                    f"""
-                    <div class="mc-card">
-                      <div class="text">
-                        <div class="title">{title_txt}</div>
-                        <div class="meta">{meta_txt}</div>
-                      </div>
-                      <div class="action" id="act_{uid}"></div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-                # 버튼은 별도로 렌더링 (오른쪽 action 영역)
-                with st.container():
-                    if st.button("➕", key=f"pick_{source}_{uid}"):
-                        if not _already_selected(r):
-                            add_selection(r, source)
-
+                # 공식 API만: bordered 컨테이너 안에서 2열 구성
+                with st.container(border=True):
+                    left, right = st.columns([1, 0.20], vertical_alignment="center")
+                    with left:
+                        st.markdown(f"<div class='mc-title'>{title_txt}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='mc-meta'>{meta_txt}</div>", unsafe_allow_html=True)
+                    with right:
+                        st.markdown("<div class='mc-actions'>", unsafe_allow_html=True)
+                        if st.button("➕", key=f"pick_{source}_{uid}"):
+                            if not _already_selected(r):
+                                add_selection(r, source)
+                        st.markdown("</div>", unsafe_allow_html=True)
 
 def render_selected_codes(sel, remove_selection, cols_per_row=3):
     if not sel:
@@ -97,18 +124,13 @@ def render_selected_codes(sel, remove_selection, cols_per_row=3):
                 title_txt = _title_from_item(it)
                 meta_txt  = f"index={_index_from_item(it)} · score={_fmt_score(it.get('score'))} · {it.get('source','')}"
 
-                st.markdown(
-                    f"""
-                    <div class="mc-card">
-                      <div class="text">
-                        <div class="title">{title_txt}</div>
-                        <div class="meta">{meta_txt}</div>
-                      </div>
-                      <div class="action" id="act_sel_{i}"></div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-                with st.container():
-                    if st.button("🗑️", key=f"del_{i}"):
-                        remove_selection(i)
+                with st.container(border=True):
+                    left, right = st.columns([1, 0.20], vertical_alignment="center")
+                    with left:
+                        st.markdown(f"<div class='mc-title'>{title_txt}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='mc-meta'>{meta_txt}</div>", unsafe_allow_html=True)
+                    with right:
+                        st.markdown("<div class='mc-actions'>", unsafe_allow_html=True)
+                        if st.button("🗑️", key=f"del_{i}"):
+                            remove_selection(i)
+                        st.markdown("</div>", unsafe_allow_html=True)
